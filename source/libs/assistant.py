@@ -13,6 +13,10 @@ class Asistant:
     def __init__(self) -> None:
         self.yourVoice = ""
         self.SystemFuncs = []
+        self.voiceFile = "./source/assistantvoices"
+
+        self.speak("Başlatılıyor...")
+
         pass
 
     def run(self):
@@ -55,8 +59,8 @@ class Asistant:
     def speak(self,string):
         tts = gTTS(string,lang="tr")
         rand = random.randint(1,10000)
-        sourceFile = "./source/assistantvoices/"
-        file = sourceFile+"audio-"+str(rand)+".mp3"
+        
+        file = self.voiceFile+"/audio-"+str(rand)+".mp3"
         tts.save(file)
         playsound(file)
         os.remove(file)

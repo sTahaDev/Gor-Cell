@@ -4,13 +4,16 @@ import sys
 import source.libs.services
 from datetime import datetime
 import json
+import requests
+import time
 
 class Program:
     def __init__(self) -> None:
         self.asistan = source.libs.assistant.Asistant()
         self.dedector = source.libs.dedection.Detector()
-        self.weatherApi = source.libs.services.weatherApi()
+        self.weatherApi = source.libs.services.WeatherApi()
         self.settings = json.loads(self.__readFile("./settings.json"))
+        self.newsApi = source.libs.services.NewsApi()
         pass
     def __readFile(self,url):
         with open(url,"r") as file:
@@ -80,7 +83,27 @@ class Program:
             self.asistan.speak(city.lower() +" için hava durumu: " + weather + " , " + str(int(temp)) + "derece." )
 
             pass
-        self.asistan.SystemFuncs.append({"qn": ["hava nasıl","hava durumunu söyle","hava durumu ne"], "func": whatIsWeather})
+        self.asistan.SystemFuncs.append({"qn": ["hava nasıl","hava durumunu söyle","hava durumu ne","hava durumu"], "func": whatIsWeather})
+
+        def readStory():
+            self.asistan.speak("Hikaye okuma özelliği gelecek yakında")
+            pass
+
+        self.asistan.SystemFuncs.append({"qn":["hikaye oku"],"func":readStory})
+
+        def readNews():
+            self.asistan.speak("Görsell Haber Sunar: İşte bu günün en çok okunanları: ")
+
+            newsIndex = 1
+            for i in self.newsApi.getCuffs():
+                self.asistan.speak(str(newsIndex) +".Haber: " + str(i) + " . ")
+                newsIndex += 1
+            
+            self.asistan.speak("Görsell Haber sunar. Sağlıcakla kalın.")
+            time.sleep(0.5)
+            
+            pass
+        self.asistan.SystemFuncs.append({"qn":["haberler","gündemi oku","yeni haberler","haberleri oku","haber","gündem","gündem ne","haberler ne"],"func":readNews})
         pass
     
     def setup(self):

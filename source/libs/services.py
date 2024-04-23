@@ -1,4 +1,6 @@
 import requests
+from bs4 import BeautifulSoup
+
 
 class ApiRequest:
     def __init__(self) -> None:
@@ -11,7 +13,7 @@ class ApiRequest:
         pass
     
 
-class weatherApi(ApiRequest):
+class WeatherApi(ApiRequest):
     def __init__(self) -> None:
         super().__init__()
 
@@ -29,4 +31,19 @@ class weatherApi(ApiRequest):
         self.cityName = cityNamee
         self.__updateUrl()
         return self.get()
+    
+class NewsApi:
+    def __init__(self) -> None:
+        self.url = ""
+        pass
+    def getCuffs(self):
+        self.url = "https://www.trthaber.com/haber/gundem/"
+        response = requests.get(self.url)
+        soup = BeautifulSoup(response.text, 'html.parser')
+        title = soup.find_all("div",class_="news-title")
+        Cuffs = []
+        for i in title:
+            Cuffs.append(i.text)
+        return Cuffs
+        pass
         
