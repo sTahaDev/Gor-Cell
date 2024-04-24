@@ -23,13 +23,17 @@ class Program:
     def __asistanFuncsAdding(self):
         #asistana işlev ekle
         self.asistan.SystemFuncs.append({"qn": ["ne haber"], "func": lambda: (
-            print(self.asistan.yourVoice),
+            
             self.asistan.speak("iyi sen")
         )})
 
         self.asistan.SystemFuncs.append({"qn": ["kapat","görüşürüz"], "func": lambda: (
             self.asistan.speak("Görüşmek Üzere"),
             sys.exit()
+        )})
+
+        self.asistan.SystemFuncs.append({"qn": ["adım ne","ismim ne","benim adım ne"], "func": lambda: (
+            self.asistan.speak("Senin adın " + self.settings["userName"] + ". Sen benim en yakın arkadaşımsın.")
         )})
 
         self.asistan.SystemFuncs.append({"qn": ["saat kaç","saat ne","saati söyle","saat ney"], "func": lambda: (
@@ -104,7 +108,24 @@ class Program:
             
             pass
         self.asistan.SystemFuncs.append({"qn":["haberler","gündemi oku","yeni haberler","haberleri oku","haber","gündem","gündem ne","haberler ne"],"func":readNews})
+
+        def isThereLight():
+            lightSize = self.dedector.detect_light()
+            maxLight = 100
+            midLight = 20
+            if(lightSize >= maxLight):
+                self.asistan.speak("Etraf Aydınlık")
+                pass
+            elif (lightSize <= maxLight and lightSize >= midLight):
+                self.asistan.speak("Etraf Loş")
+                pass
+            elif (lightSize < midLight):
+                self.asistan.speak("Etraf Karanlık")
+                pass
+            pass
+        self.asistan.SystemFuncs.append({"qn":["ışık var mı","hava aydınlık mı","etraf aydınlık mı","hava aydınlık mı","ortam nasıl"],"func":isThereLight})
         pass
+
     
     def setup(self):
         #Assitanın koşullı işlemlerini ekleme

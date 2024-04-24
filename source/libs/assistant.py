@@ -31,7 +31,7 @@ class Asistant:
     def __execute(self,response):
         for item in self.SystemFuncs:
             for i in item["qn"]:
-                if i.lower() == response.lower():
+                if response.lower() == i.lower():
                     item["func"]()
                     break
             
